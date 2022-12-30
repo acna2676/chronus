@@ -1,3 +1,4 @@
+
 /**
  * 愛のJava256本ノック for Java 5.0
  * Javaサンプルソース ver0.2C "LifeTimeClock"
@@ -76,44 +77,35 @@ class DrawPanel extends JPanel implements ActionListener {
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(lifeLimit);
       int lifeLimitYear = calendar.get(Calendar.YEAR); // - 1900;
+      calendar.setTime(now);
       int nowYear = calendar.get(Calendar.YEAR); // - 1900;
       // 生きてる間に100で割り切れる年は来ないので4で割り切れる年しか考慮しない
       // うるう年が何回あるか計算する
       int leapYearCount = 0;
-      for (int year = nowYear + 1; year < lifeLimit; year++) {
-        if (year / 4 == 0) {
+      System.out.println("year: " + nowYear + "," + lifeLimitYear);
+      for (int year = nowYear + 1; year < lifeLimitYear; year++) {
+        // System.out.println("year: " + year);
+        if (year % 4 == 0) {
           leapYearCount += 1;
-          continue;
         }
       }
+      System.out.println(
+          "leapYearCount: " + leapYearCount + "," + (lifeLimitYear - nowYear - leapYearCount));
 
-      long leftYear =
-        (
-          366 * leapYearCount + 365 * (lifeLimitYear - nowYear - leapYearCount)
-        ) *
-        86400;
-      long leftMonth =
-        (
-          leftTime -
-          (
-            366 *
-            leapYearCount +
-            365 *
-            (lifeLimitYear - nowYear - leapYearCount)
-          ) *
-          86400
-        ) /
-        30;
+      long leftYear = lifeLimitYear - nowYear; // leftTime / (366 * leapYearCount + 365 * (lifeLimitYear - nowYear -
+                                               // leapYearCount));
+      System.out.println("leftYear: " + leftYear);
+      // long leftMonth = calendar.setTime(now);
+      int nowMonth = calendar.get(Calendar.MONTH); // - 1900;
       long leftDay = leftTime / 86400;
       String L00 = String.format("残り %d 日", leftDay);
 
       FontMetrics L01 = A00.getFontMetrics();
 
       A00.drawString(
-        L00,
-        (getWidth() - L01.stringWidth(L00)) / 2,
-        (getHeight() + L01.getAscent() - L01.getDescent()) / 2
-      );
+          L00,
+          (getWidth() - L01.stringWidth(L00)) / 2,
+          (getHeight() + L01.getAscent() - L01.getDescent()) / 2);
     } catch (ParseException e) {
       System.out.println("正しい日付ではありません");
     }
