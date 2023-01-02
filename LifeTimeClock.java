@@ -1,8 +1,8 @@
-
+package MvnJava.src.main.java.com.chronus;
 /**
- * 愛のJava256本ノック for Java 5.0
+ * Java 19
  * Javaサンプルソース ver0.2C "LifeTimeClock"
- * LifeTimeClock.java 「時間を文字列に整形してデジタル時計」
+ * LifeTimeClock.java 「自分にはあとどれくらいの時間が残されているのか」
  *
  * 2005/09/23 制作：安永ノリカズ
  *
@@ -71,41 +71,40 @@ class DrawPanel extends JPanel implements ActionListener {
     Date now = new Date();
     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSSXXX");
     try {
+      // 平均寿命まで生きることを想定
       Date lifeLimit = df.parse("2074/01/01 00:00:00.000+00:00");
-      long leftTime = (lifeLimit.getTime() - now.getTime()) / 1000;
+      //   long leftTime = (lifeLimit.getTime() - now.getTime()) / 1000;
 
       Calendar calendar = Calendar.getInstance();
       calendar.setTime(lifeLimit);
-      int lifeLimitYear = calendar.get(Calendar.YEAR); // - 1900;
+      int lifeLimitYear = calendar.get(Calendar.YEAR);
       calendar.setTime(now);
-      int nowYear = calendar.get(Calendar.YEAR); // - 1900;
-      // 生きてる間に100で割り切れる年は来ないので4で割り切れる年しか考慮しない
-      // うるう年が何回あるか計算する
-      int leapYearCount = 0;
-      System.out.println("year: " + nowYear + "," + lifeLimitYear);
-      for (int year = nowYear + 1; year < lifeLimitYear; year++) {
-        // System.out.println("year: " + year);
-        if (year % 4 == 0) {
-          leapYearCount += 1;
-        }
-      }
-      System.out.println(
-          "leapYearCount: " + leapYearCount + "," + (lifeLimitYear - nowYear - leapYearCount));
+      int nowYear = calendar.get(Calendar.YEAR);
+      int nowMonth = calendar.get(Calendar.MONTH);
+      int nowDay = calendar.get(Calendar.DATE);
+      long leftYear = lifeLimitYear - nowYear;
+      long leftMonth = 12 - (nowMonth + 1);
+      long leftDay = calendar.getActualMaximum(Calendar.DATE) - nowDay;
+      long leftHour = 23 - calendar.get(Calendar.HOUR_OF_DAY);
+      long leftMinute = 59 - calendar.get(Calendar.MINUTE);
+      long leftSecond = 59 - calendar.get(Calendar.SECOND);
 
-      long leftYear = lifeLimitYear - nowYear; // leftTime / (366 * leapYearCount + 365 * (lifeLimitYear - nowYear -
-                                               // leapYearCount));
-      System.out.println("leftYear: " + leftYear);
-      // long leftMonth = calendar.setTime(now);
-      int nowMonth = calendar.get(Calendar.MONTH); // - 1900;
-      long leftDay = leftTime / 86400;
-      String L00 = String.format("残り %d 日", leftDay);
+      String L00 = String.format(
+        "残り %d 年 %d カ月 %d 日 %d 時間 %d 分 %d 秒",
+        leftYear,
+        leftMonth,
+        leftDay,
+        leftHour,
+        leftMinute,
+        leftSecond
+      );
 
       FontMetrics L01 = A00.getFontMetrics();
-
       A00.drawString(
-          L00,
-          (getWidth() - L01.stringWidth(L00)) / 2,
-          (getHeight() + L01.getAscent() - L01.getDescent()) / 2);
+        L00,
+        (getWidth() - L01.stringWidth(L00)) / 2,
+        (getHeight() + L01.getAscent() - L01.getDescent()) / 2
+      );
     } catch (ParseException e) {
       System.out.println("正しい日付ではありません");
     }
