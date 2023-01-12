@@ -1,0 +1,10 @@
+{
+  "name": "maven:3.8.5-openjdk-18",
+  // Dockerfileでイメージ・コンテナを作成
+  "dockerFile": "Dockerfile"
+  // "workspaceFolder": "/home/pacc", // Workspaceのフォルダを指定
+  // リモート先のVS Codeにインストールする拡張機能
+  // "extensions": ["ms-python.python"],
+  // "forwardPorts": [8000],
+  // "containerEnv": { "SECRET_KEY": "${localEnv:SECRET_KEY}" }
+}

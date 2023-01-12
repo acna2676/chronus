@@ -1,0 +1,25 @@
+<plugin>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>18</version>
+	<executions>
+		<execution>
+			<id>make-assembly</id>
+			<phase>package</phase>
+			<goals>
+				<goal>single</goal>
+			</goals>
+		</execution>
+	</executions>
+	<configuration>
+		<finalName>LifeTimeClock</finalName>
+		<appendAssemblyId>false</appendAssemblyId>
+		<descriptorRefs>
+			<descriptorRef>jar-with-dependencies</descriptorRef>
+		</descriptorRefs>
+		<archive>
+			<manifest>
+				<mainClass>com.chronus.LifeTimeClock</mainClass>
+			</manifest>
+		</archive>
+	</configuration>
+</plugin>
